@@ -22,7 +22,7 @@ import json
 import base64
 import re
 import ConfigParser
-
+import urllib
 
 LOG = log.getLogger(__name__)
 CONF = cfg.CONF
@@ -244,17 +244,23 @@ class UAAAuthMiddleware(wsgi.Middleware):
             except:
                 user_id = None
             domain = self._domain_lookup(request)
-            if (domain is None or domain == 'default' or user_id is not None):
+            if (domain is None or domain == 'default'):
                 return
             else:
                 BM_HEADER['Content-Type'] = 'application/x-www-form-urlencoded'
                 try:
-                    user = body['auth']['identity']['password'][
-                        'user']['name']
+                    if (user_id is not None):
+                        _user = self.identity_api.get_user(user_id)
+                        user = _user['name']
+                    else:
+                        user = body['auth']['identity']['password'][
+                            'user']['name']
                     password = body['auth']['identity']['password'][
                         'user']['password']
+                    en_user = urllib.quote_plus(user)
+                    en_password = urllib.quote_plus(password)
                     payload = "grant_type=password&scope=openid&username={}&password={}".format(
-                        user, password)
+                        en_user, en_password)
                     response = requests.post(IDAAS,
                                              data=payload,
                                              auth=(CLIENTID, SECRET),
