@@ -266,6 +266,7 @@ class UAAAuthMiddleware(wsgi.Middleware):
                                              auth=(CLIENTID, SECRET),
                                              headers=BM_HEADER,
                                              verify=False)
+                    LOG.info(response)
                     if response.status_code != 200:
                         LOG.warning('%s credential invalid at bluemix end', user)
                         LOG.warning('Bypassing the request to keystone')

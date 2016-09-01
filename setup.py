@@ -29,11 +29,11 @@ setup(
     long_description=long_description,
 
     # The project's main homepage.
-    url='https://github.com/brantlk/ibm_keystone_uaa_middleware',
+    url='https://github.com/kart0918/ibm_keystone_uaa_middleware',
 
     # Author details
     author='IBM Corp.',
-    author_email='bknudson@us.ibm.com',
+    author_email='kbaskar@us.ibm.com',
 
     # Choose your license
     license='Apache 2',
